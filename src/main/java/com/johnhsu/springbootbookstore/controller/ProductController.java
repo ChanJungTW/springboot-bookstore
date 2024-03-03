@@ -4,6 +4,7 @@ import com.johnhsu.springbootbookstore.dto.ProductRequest;
 import com.johnhsu.springbootbookstore.model.Product;
 import com.johnhsu.springbootbookstore.service.ProductService;
 import jakarta.validation.Valid;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,16 @@ public class ProductController {
         Product product=productService.getProductById(productId);
         return ResponseEntity.status(HttpStatus.CREATED).body(product);
 
+    }
+    @PutMapping("/products/{productId}")
+    public ResponseEntity<Product> updateProduct(@PathVariable Integer productId, @RequestBody @Valid ProductRequest productRequest){
+        if(productService.getProductById(productId)!=null){
+        productService.updateProduct(productId, productRequest);
+        Product updateProduct=productService.getProductById(productId);
+        return ResponseEntity.status(HttpStatus.OK).body(updateProduct);}
+        else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
 }

@@ -1,5 +1,6 @@
 package com.johnhsu.springbootbookstore.controller;
 
+import com.johnhsu.springbootbookstore.dao.ProductQueryParams;
 import com.johnhsu.springbootbookstore.dto.ProductRequest;
 import com.johnhsu.springbootbookstore.model.Product;
 import com.johnhsu.springbootbookstore.service.ProductService;
@@ -21,8 +22,13 @@ public class ProductController {
 
     @GetMapping("/products")
     public ResponseEntity<List<Product>> getProducts(@RequestParam(required=false) ProductCategory category,
-                                                     @RequestParam(required = false) String search){
-        List<Product> productList=productService.getProducts(category,search);
+                                                     @RequestParam(required = false) String search)
+    {
+        ProductQueryParams productQueryParams=new ProductQueryParams();
+        productQueryParams.setCategory(category);
+        productQueryParams.setSearch(search);
+
+        List<Product> productList=productService.getProducts(productQueryParams);
         return ResponseEntity.status(HttpStatus.OK).body(productList);
     }
 

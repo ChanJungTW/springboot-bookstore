@@ -1,6 +1,7 @@
 package com.johnhsu.springbootbookstore.service.impl;
 
 import com.johnhsu.springbootbookstore.dao.ProductDao;
+import com.johnhsu.springbootbookstore.dao.ProductQueryParams;
 import com.johnhsu.springbootbookstore.dto.ProductRequest;
 import com.johnhsu.springbootbookstore.model.Product;
 import com.johnhsu.springbootbookstore.service.ProductService;
@@ -19,8 +20,8 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Override
-    public List<Product> getProducts(ProductCategory category, String search) {
-        return productDao.getProducts(category,search);
+    public List<Product> getProducts(ProductQueryParams productQueryParams) {
+        return productDao.getProducts(productQueryParams);
     }
 
     @Override

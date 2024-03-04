@@ -3,6 +3,7 @@ package com.johnhsu.springbootbookstore.controller;
 import com.johnhsu.springbootbookstore.dto.ProductRequest;
 import com.johnhsu.springbootbookstore.model.Product;
 import com.johnhsu.springbootbookstore.service.ProductService;
+import constant.ProductCategory;
 import jakarta.validation.Valid;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +18,13 @@ import java.util.List;
 public class ProductController {
     @Autowired
     private ProductService productService;
+
     @GetMapping("/products")
-    public ResponseEntity<List<Product>> getProducts(){
-        List<Product> productList=productService.getProducts();
+    public ResponseEntity<List<Product>> getProducts(@RequestParam(required=false) ProductCategory category,
+                                                     @RequestParam(required = false) String search){
+        List<Product> productList=productService.getProducts(category,search);
         return ResponseEntity.status(HttpStatus.OK).body(productList);
     }
-
 
 
     @GetMapping("/products/{productId}")

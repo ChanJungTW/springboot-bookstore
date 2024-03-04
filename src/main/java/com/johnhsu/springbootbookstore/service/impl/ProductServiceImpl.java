@@ -4,6 +4,7 @@ import com.johnhsu.springbootbookstore.dao.ProductDao;
 import com.johnhsu.springbootbookstore.dto.ProductRequest;
 import com.johnhsu.springbootbookstore.model.Product;
 import com.johnhsu.springbootbookstore.service.ProductService;
+import constant.ProductCategory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,9 +16,11 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductDao productDao;
 
+
+
     @Override
-    public List<Product> getProducts() {
-        return productDao.getProducts();
+    public List<Product> getProducts(ProductCategory category, String search) {
+        return productDao.getProducts(category,search);
     }
 
     @Override

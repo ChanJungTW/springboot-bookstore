@@ -4,6 +4,7 @@ import com.johnhsu.springbootbookstore.dao.ProductQueryParams;
 import com.johnhsu.springbootbookstore.dto.ProductRequest;
 import com.johnhsu.springbootbookstore.model.Product;
 import com.johnhsu.springbootbookstore.service.ProductService;
+import com.johnhsu.springbootbookstore.util.Page;
 import constant.ProductCategory;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
@@ -24,7 +25,7 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/products")
-    public ResponseEntity<List<Product>> getProducts(@RequestParam(required=false) ProductCategory category,
+    public ResponseEntity<Page<Product>> getProducts(@RequestParam(required=false) ProductCategory category,
                                                      @RequestParam(required = false) String search,
                                                      @RequestParam(defaultValue="created_date") String orderBy,
                                                      @RequestParam(defaultValue="desc") String sort,
@@ -42,7 +43,14 @@ public class ProductController {
         productQueryParams.setOffset(offset);
 
         List<Product> productList=productService.getProducts(productQueryParams);
-        return ResponseEntity.status(HttpStatus.OK).body(productList);
+        Integer total=productService.countProduct(productQueryParams);
+        Page<Product> page = new Page();
+        page.setLimit(limit);
+        page.setOffset(offset);
+        page.setTotal(total);
+        page.setResults(productList);
+
+        return ResponseEntity.status(HttpStatus.OK).body(page);
     }
 
 
